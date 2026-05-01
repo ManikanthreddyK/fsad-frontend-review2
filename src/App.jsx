@@ -1,5 +1,4 @@
 import { useEffect, useMemo, useState } from "react";
-import ReCAPTCHA from "react-google-recaptcha";
 import api, { setAuthToken } from "./api";
 
 const getApiErrorMessage = (error, fallbackMessage) => error?.response?.data?.message || fallbackMessage;
