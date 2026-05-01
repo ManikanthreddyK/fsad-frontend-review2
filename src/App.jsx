@@ -5,9 +5,6 @@ const getApiErrorMessage = (error, fallbackMessage) => error?.response?.data?.me
 
 const AUTH_USER_KEY = "authUser";
 const AUTH_TOKEN_KEY = "token";
-const RECAPTCHA_SITE_KEY = import.meta.env.VITE_RECAPTCHA_SITE_KEY || "";
-const HAS_RECAPTCHA_KEY = RECAPTCHA_SITE_KEY.trim().length > 0;
-
 const authHighlights = [
   {
     icon: "🎯",
@@ -136,7 +133,6 @@ function App() {
   const [adminCounsellors, setAdminCounsellors] = useState([]);
   const [counsellorSessions, setCounsellorSessions] = useState([]);
   const [errorMessage, setErrorMessage] = useState("");
-  const [captchaToken, setCaptchaToken] = useState("");
   const [newResource, setNewResource] = useState({
     title: "",
     careerPath: "",
@@ -281,19 +277,10 @@ function App() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    if (!HAS_RECAPTCHA_KEY) {
-      setErrorMessage("CAPTCHA key missing");
-      return;
-    }
-    if (!captchaToken) {
-      setErrorMessage("Please complete CAPTCHA");
-      return;
-    }
     const loginPayload = {
-      email: authForm.email,
-      password: authForm.password,
-      captchaToken
-    };
+  email: authForm.email,
+  password: authForm.password
+};
     console.log("Login clicked", loginPayload);
     try {
       setErrorMessage("");
@@ -436,11 +423,7 @@ function App() {
                     />
                   </div>
                   <div className="field-group">
-                    {HAS_RECAPTCHA_KEY ? (
-                      <ReCAPTCHA sitekey={RECAPTCHA_SITE_KEY} onChange={(token) => setCaptchaToken(token || "")} />
-                    ) : (
-                      <p className="error">CAPTCHA key missing</p>
-                    )}
+      
                   </div>
                   <button type="submit" className="primary-button">Sign In</button>
                 </form>
